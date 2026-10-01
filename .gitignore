@@ -1,0 +1,14 @@
+# Keys and local settings
+.env
+.env.*
+!.env.example
+.claude/settings.local.json
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Tooling
+node_modules/
+__pycache__/
+*.pyc

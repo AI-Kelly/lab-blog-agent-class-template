@@ -1,0 +1,43 @@
+<!--
+  Post template. The delivery step fills in every {{PLACEHOLDER}}.
+  Paste everything below this comment into your blog editor's HTML view.
+  The FAQ schema block must list the same questions and answers that appear in the FAQ section.
+-->
+<article>
+  <h1>{{TITLE}}</h1>
+
+  <p>{{ANSWER_PARAGRAPH}}</p>
+
+  <p><strong>TL;DR:</strong> {{TLDR}}</p>
+
+  {{BODY_HTML}}
+
+  <!-- Remove this section if the post has no action steps. -->
+  <h2>{{ACTION_STEPS_HEADING}}</h2>
+  <ol>
+    {{ACTION_STEPS_LIST_ITEMS}}
+  </ol>
+
+  <h2>Frequently asked questions</h2>
+  {{FAQ_HTML}}
+
+  <p>{{CALL_TO_ACTION}}</p>
+</article>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{FAQ_SCHEMA_ITEMS}}
+  ]
+}
+</script>
+<!--
+  Each FAQ_SCHEMA_ITEMS entry looks like:
+  {
+    "@type": "Question",
+    "name": "The question?",
+    "acceptedAnswer": { "@type": "Answer", "text": "The answer." }
+  }
+-->
