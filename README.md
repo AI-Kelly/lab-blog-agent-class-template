@@ -73,13 +73,40 @@ A sensible answer means the foundation works.
 
 ---
 
+## Session 2: Topic Researcher
+
+Goal: one command gives you a ranked shortlist of 10 blog topics your buyers are searching for right before they buy, and you choose which ones to write.
+
+1. **Get the new files.** Paste the prompt from [docs/updating-from-template.md](docs/updating-from-template.md) into Claude Code. It adds this session's files without touching your context files, outputs, or keys.
+2. **Tell it where your meeting notes and emails live** (optional, but it makes the topics much better). Paste this into Claude Code:
+   > Create my-sources.md listing where my meeting notes and emails live. Ask me which tools I use, which folders or labels to look in, and how far back to read. Tool names and folders only, no content.
+
+   Then make sure each of those tools is connected at claude.ai → Customize → Connectors. The agent reads them live during a run and keeps only themes, never quotes or client names.
+3. **Review the scoring rules.** Open `context/topic-scoring.md`. It scores topics on buying intent, fit with your ICP, search demand, how winnable they are, how likely AI assistants are to cite them, and connection to your offers. Change any weights you like, and add anything to the "Never suggest" or "Always prefer" lists.
+4. **Run it.** Type `/research-topics`. The first time, it asks for your blog URL, your Databox account, and the country and language for keyword data. It then researches for a few minutes and shows the top 3.
+5. **Make your decisions.** Open the shortlist in `output/topics/`. On each topic, put an x in approve or reject, like `[x] approve`, and add a short reason. The next run reads your decisions and learns from them.
+6. **Save and sync.** Ask Claude Code to commit and push.
+
+**What it costs:** each run makes at most 3 paid DataForSEO calls (you can change this in `context/settings.md`), usually a few cents in total. The run log in `output/logs/` shows the exact amount.
+
+### The finish-line test
+
+Look at your shortlist and ask yourself: *Would I happily write at least three of these this month?* If yes, the researcher works. If not, mark your reasons on the rejects, adjust `context/topic-scoring.md`, and run `/research-topics` again.
+
+---
+
 ## Folder map
 
 ```
 CLAUDE.md                 Master instructions Claude Code reads every time
-context/                  Your business: ICP, offers, voice, example posts
+context/                  Your business: ICP, offers, voice, example posts,
+                          settings, and topic scoring rules
+my-sources.md             Where your meeting notes and emails live (you create this)
 templates/                The post structure and HTML shell every post uses
-.claude/skills/           Commands you can type, like /setup-context
+.claude/agents/           The agents that do the work, like the Topic Researcher
+.claude/skills/           Commands you can type, like /research-topics
+output/topics/            Topic shortlists, with your approve and reject decisions
+output/logs/              A short log of each run: data used and cost
 output/posts/             Finished posts land here
 post-log.csv              A record of every post
 docs/                     Build plan and how to get template updates

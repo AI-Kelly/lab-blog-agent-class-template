@@ -13,7 +13,7 @@ When finished, each run will:
 5. **Deliver.** Save finished HTML (with FAQ schema) and a publishing card in `output/posts/`.
 6. **Log.** Add a row to `post-log.csv`.
 
-The agents for these steps are added in later sessions. Right now the project is in the **foundation stage**.
+The agents for these steps are added one session at a time. **Step 1 (research) is built:** type `/research-topics` to run the Topic Researcher agent. The other steps come in later sessions.
 
 ## Where things live
 
@@ -21,19 +21,27 @@ The agents for these steps are added in later sessions. Right now the project is
 - `context/offers.md` – what the owner sells. Source of truth for bottom-of-the-funnel topics.
 - `context/voice-and-style.md` – how the owner writes. Rules the reviewer will enforce.
 - `context/example-posts/` – the owner's best posts, used as voice samples.
+- `context/settings.md` – the owner's blog URL, Databox account and data source IDs, keyword country and language, and paid-call limit.
+- `context/topic-scoring.md` – how topics are scored, plus the owner's "Never suggest" and "Always prefer" lists.
+- `my-sources.md` (optional, made by the owner) – where the owner's meeting notes and emails live. Tool names and folders only, never content.
 - `templates/post-structure.md` – required structure for every post.
 - `templates/post.html` – HTML shell for finished posts.
+- `.claude/agents/` – the agents that do each step (for example, `topic-researcher.md`).
+- `.claude/skills/` – commands the owner types, such as `/research-topics`.
+- `output/topics/` – topic shortlists, with the owner's approve and reject decisions.
+- `output/logs/` – a short log of each run: data used, paid calls, cost.
 - `output/posts/` – finished posts.
 - `post-log.csv` – one row per post.
 - `docs/build-plan.md` – what gets built and in what order.
 
-Always read the context files before doing any research or writing. If a context file still contains `TODO` lines, tell the owner and offer to run `/setup-context`.
+Always read the context files before doing any research or writing. If `icp.md`, `offers.md`, or `voice-and-style.md` still contains `TODO` lines, tell the owner and offer to run `/setup-context`. Missing lines in `settings.md` are filled in by `/research-topics`.
 
 ## Rules
 
 - **Never commit secrets.** API keys live only in `.env`, which is git-ignored. Never print key values in chat.
 - **Keep private content out of the repository.** Meeting notes, emails, and client conversations are read live through connectors during a run. Never save them as files in this repository. Summaries of themes are fine; quotes and names of clients are not.
-- **Read data from Databox, not from ad platforms or CRMs directly.**
+- **Read data from Databox, not from ad platforms or CRMs directly.** Use only the Databox account in `context/settings.md`.
+- **Watch DataForSEO spending.** Batch keywords into as few calls as possible, and never make more paid calls in one run than the limit in `context/settings.md`.
 - **Write in plain English.** The owner is a marketing or sales leader, not a developer. Explain what you did in one or two sentences, not a list of commands.
 - **Ask before anything that publishes or sends** (posting to a blog, emailing, posting to social).
 
