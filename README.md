@@ -12,11 +12,14 @@ This is the **class template**. It holds blank starter files only. Your own busi
 
 ### The easy way: let Claude Code do it
 
-Open Claude Code in the folder where you keep your projects and say:
+First, make sure Claude Code is signed in to GitHub (your instructor will walk you through this). Then paste this into Claude Code:
 
-> Create a private copy of the class template AI-Kelly/lab-blog-agent-class-template named blog-agent, download it here, and open it.
+> Make my own private copy of this GitHub template: https://github.com/AI-Kelly/lab-blog-agent-class-template
+> - Use GitHub's template option, not a fork. Name the new repository blog-agent and make it private under my GitHub account.
+> - Download it into my Documents folder. Then check that the downloaded folder contains README.md and CLAUDE.md. If it's empty, wait 10 seconds and download it again.
+> - When you're done, give me the link to my new repository and the folder location on my computer.
 
-Claude Code uses GitHub's command-line tool for this. If you haven't used it before, Claude Code will install it and open a browser window so you can sign in to GitHub. That's a one-time step.
+Then start a new Claude Code session in the **Documents/blog-agent** folder.
 
 ### The manual way: use GitHub's website
 
