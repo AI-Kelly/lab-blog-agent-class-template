@@ -23,17 +23,24 @@ Save each answer in `context/settings.md`, replacing its TODO. Don't change any 
 
 If the "Maximum paid DataForSEO calls per run" line is still 3, mention in one sentence that they can change it in that file.
 
-## 2. Run the research
+## 2. Check for my-sources.md
+
+If `my-sources.md` isn't in the main folder, tell the owner in one or two sentences: this file lists where their meeting notes and emails live, and the researcher uses it to find the questions buyers really ask. Offer to create it now.
+
+- If they say yes, ask which tools hold their meeting notes and emails (for example, a meeting recorder, Gmail, Google Drive, or Airtable), which folders or labels to look in, and how far back to read (suggest the last 30 days). Save their answers to `my-sources.md` as a short list. Tool names, folders, and labels only, never content. Remind them that each tool needs to be connected at claude.ai → Customize → Connectors.
+- If they say no, carry on. The research runs without meeting and email themes.
+
+## 3. Run the research
 
 Tell the owner the research is starting and usually takes a few minutes.
 
 Run the `topic-researcher` agent. Tell it today's date. It returns a **Shortlist** and a **Run record**.
 
-## 3. Check for private details
+## 4. Check for private details
 
 Before saving anything, read the shortlist and run record. If any line contains a client's name, a person's name, a quote from a meeting or email, or a private deal detail, rewrite it as a general theme. These files are saved in the repository.
 
-## 4. Save the shortlist
+## 5. Save the shortlist
 
 Get today's date with `date +%F` and save to `output/topics/YYYY-MM-DD-topics.md`. If that file already exists, add `-2`, `-3`, and so on before `.md`. Never overwrite an earlier shortlist.
 
@@ -49,7 +56,7 @@ To choose topics, put an x in a box, like [x] approve, and add a short reason. Y
 Decision: [ ] approve [ ] reject. Reason:
 ```
 
-## 5. Save the run log
+## 6. Save the run log
 
 Save to `output/logs/YYYY-MM-DD-research.md` with the same date and suffix as the shortlist.
 
@@ -71,10 +78,12 @@ Use this layout:
 | Context files | <files read, any TODOs> | <Yes / No: what changed / First run> |
 | Earlier shortlists and decisions | <counts, what was learned> | |
 | Blog posts already covered | <count and source> | |
-| Databox: Search Console | <account, data source, date range, queries and pages pulled> | |
+| Databox: Search Console | <account, data source, date range, queries and pages pulled, any timeouts and retries> | |
+| Search Console position | <metric name used, or "Not available: winnable scored from keyword difficulty only"> | |
 | Meetings and emails | <tools, items read, themes found> | |
 | DataForSEO free check | <OK or the problem> | |
 | DataForSEO paid calls | <each call: endpoint, keywords sent, country, language> | |
+| Keyword ideas | <seed phrases, ideas returned and kept; "off-topic: results not used"; or skipped and why> | |
 | Scoring | <candidates scored, topics kept> | |
 
 ## Skipped or failed
@@ -83,11 +92,11 @@ Use this layout:
 
 Never put key values, quotes, or client names in the log.
 
-## 6. Show the results
+## 7. Show the results
 
 In the chat, show:
 - The top 3 topics: title, target keyword, monthly searches, weighted total, and the one-line reason.
-- One sentence on what data was used, and anything that was skipped, with how to fix it. For example, if there's no `my-sources.md`, offer to create one: a short list of where their meeting notes and emails live (tool names and folders or labels only, no content).
+- One sentence on what data was used, and anything that was skipped, with how to fix it. For example, if position data wasn't available, say that "winnable" was scored from keyword difficulty only.
 - Paid calls made and the estimated cost.
 - Where the full shortlist is saved, and a reminder to mark approve or reject on each topic.
 

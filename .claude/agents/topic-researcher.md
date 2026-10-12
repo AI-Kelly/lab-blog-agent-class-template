@@ -27,6 +27,8 @@ Read:
   - every topic already shortlisted, and
   - every decision: a topic is approved or rejected when `[x]` is in front of that word on its "Decision:" line. Read the reason after "Reason:".
 
+Also read the most recent `-research.md` file in `output/logs/`, if there is one, to see what happened last run.
+
 From the decisions, work out what the owner likes and doesn't. For example, if they reject every "what is" topic, or keep approving pricing topics, let that shape your picks and scores this time. Note what you learned so you can report it.
 
 If `settings.md` still has TODO lines, use whatever is filled in and skip what depends on the rest.
@@ -50,8 +52,12 @@ Using only the account and Search Console data source in `settings.md`, pull the
 
 If you don't know the exact metric names, list the metrics for that data source first and pick the ones that match.
 
+**Call Databox one request at a time.** Never send Databox requests in parallel; they time out. Wait for each request to finish before sending the next. If a request times out, wait a few seconds and retry it once. If it fails again, skip that request and note it in the run record.
+
+**Average position.** Databox offers position under different metric names depending on the setup, such as "Average Position", "Avg. Position", "Position", or "Average Search Position". Check the metric list for every position metric on the Search Console data source and try each one, one at a time, until one returns values for queries. If none of them return values, don't guess positions. Say so plainly in the run record, and score "winnable" from keyword difficulty alone (see Step 7).
+
 Look for:
-- Searches where the owner sits in positions 1-20 without a post written for that search. These are the easiest wins.
+- Searches where the owner sits in positions 1-20 without a post written for that search. These are the easiest wins. (Skip this if position data isn't available.)
 - Searches with plenty of impressions but few clicks.
 - Buying-stage searches (pricing, comparisons, "best", "vs", "alternative", "how to choose") that show up at all.
 - Which pages already win, so you don't suggest topics they already cover.
@@ -100,8 +106,12 @@ Then make paid calls in this order, stopping when you reach the limit in `settin
    Results are in `tasks[0].result[0].items`. For each item, read the monthly searches (`keyword_info.search_volume`), keyword difficulty (`keyword_properties.keyword_difficulty`, 0-100), and the search intent (`search_intent_info.main_intent`: informational, navigational, commercial, or transactional). Keywords with no data are left out of the results and aren't charged. "Commercial" and "transactional" intent support a high buying-intent score.
 2. **Only if calls remain and too few candidates have real demand:** find related searches with more volume.
    `POST https://api.dataforseo.com/v3/dataforseo_labs/google/keyword_ideas/live`
-   Body: `[{"keywords": [...your 10-20 strongest candidate keywords...], "location_name": "...", "language_name": "...", "limit": 200}]`
-   The results already include volume and difficulty, so they need no extra call. Add only the buying-stage results to your candidates.
+   Body: `[{"keywords": [...5-15 seed phrases...], "location_name": "...", "language_name": "...", "limit": 200}]`
+   - **Seeds:** use specific 2-4 word phrases taken from the "Questions they ask right before buying" in `icp.md`, such as the product category plus a buying word ("<category> pricing", "<category> vs <alternative>"). Never use single words or broad terms; they bring back off-topic ideas.
+   - **Skip this call and save the budget** if you can't write at least 5 specific seed phrases (for example, if the buying questions in `icp.md` are still TODO), or if the most recent run log in `output/logs/` says this call's results were off-topic.
+   - **Filter the results.** Drop every idea that doesn't contain at least one seed word (ignore small words like "the", "for", "how", "to", "a", "and", "of", "in"). Then drop anything that isn't buying-stage or doesn't match the ICP.
+   - **If the results are still mostly off-topic after filtering, don't use them.** Note "keyword ideas off-topic" in the run record so the next run skips this call.
+   - The results already include volume and difficulty, so they need no extra call.
 3. Keep any remaining call in reserve. Use it only to retry a call that failed.
 
 Each response includes a top-level `cost` field in US dollars. Add them up for the run's cost.
@@ -110,7 +120,7 @@ DataForSEO often has no data for very specific buying-stage searches. Treat "no 
 
 ## Step 7: Score and rank
 
-Score each candidate 1-5 on the six criteria, using the definitions and weights in `topic-scoring.md`. Apply its ground rules. Let what you learned from earlier decisions guide close calls.
+Score each candidate 1-5 on the six criteria, using the definitions and weights in `topic-scoring.md`. Apply its ground rules. If Search Console position data wasn't available, score "winnable" from keyword difficulty alone, and say so in the run record. Let what you learned from earlier decisions guide close calls.
 
 Rank by weighted total and keep the top 10. If fewer than 10 candidates are good enough, return fewer and say why. Don't pad the list.
 
@@ -139,7 +149,8 @@ For each topic, highest score first:
 
 ```
 - **Date range for Search Console:** <start> to <end>
-- **Databox:** <account ID and data source ID used, and how many queries and pages were pulled, or "Skipped: <reason>">
+- **Databox:** <account ID and data source ID used, and how many queries and pages were pulled, or "Skipped: <reason>">. Note any request that timed out and whether the retry worked.
+- **Search Console position:** <the metric name that worked, or "Not available. Tried: <metric names>. Winnable was scored from keyword difficulty only.">
 - **Meetings and emails:** <which tools, how many items read, how many themes found, or "Skipped: <reason>">
 - **Blog posts found:** <number and where they came from (sitemap or blog page), or "Skipped: <reason>">
 - **Earlier shortlists read:** <number of files, approved count, rejected count>
@@ -147,6 +158,7 @@ For each topic, highest score first:
 - **Candidates considered:** <number before scoring>
 - **DataForSEO free check:** <OK and balance, or the problem>
 - **DataForSEO paid calls:** <n> of <limit>. For each: <endpoint, number of keywords sent, country, language, cost>
+- **Keyword ideas:** <seed phrases used, ideas returned, ideas kept after filtering; or "keyword ideas off-topic: results not used"; or "Skipped: <reason>">
 - **Total DataForSEO cost:** $<sum of cost fields>
 - **Skipped or failed:** <every step that didn't fully run and why, or "Nothing">
 ```
