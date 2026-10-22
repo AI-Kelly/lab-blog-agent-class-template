@@ -95,6 +95,26 @@ Look at your shortlist and ask yourself: *Would I happily write at least three o
 
 ---
 
+## Session 3: Writer
+
+Goal: one command turns your best approved topic into a full draft in your voice, and your feedback on each draft becomes a rule the writer follows from then on.
+
+1. **Get the new files.** Paste the prompt from [docs/updating-from-template.md](docs/updating-from-template.md) into Claude Code.
+2. **Check your voice file.** Open `context/voice-and-style.md` and make sure the "Post length" target and the "Words and phrases we never use" list are filled in. The writer follows them exactly. To let posts show your prices, run `/setup-context` and answer the new prices question; until then, the writer leaves prices out. Make sure you have 3-5 posts in `context/example-posts/` too.
+3. **Write a post.** Type `/write-post`. It picks your highest-scoring approved topic that hasn't been written yet. To choose the topic yourself, add it after the command, like `/write-post topic 3` or `/write-post <your topic>`.
+4. **Approve the brief.** Before writing, it checks what ranks on Google's first page today, reads the top articles, and shows you a short brief: the angle, the headings, the FAQ questions, the offer it leads to, and the length. Say "write it", or tell it what to change.
+5. **Read the draft.** It's saved in `output/drafts/`, next to the brief. The chat shows the opening paragraph and TL;DR. Any fact that still needs a source is marked `[SOURCE NEEDED: ...]`; leave those for now, because the Source Finder fills them in a later session.
+6. **Give feedback.** Type `/revise-post` followed by what you'd change, for example `/revise-post the intro is too long and don't use the word "robust"`. It edits the draft, then asks whether any of it should become a permanent rule. Say yes to anything you'd want in every post. Style and tone rules go in `context/voice-and-style.md`; rules about claims, facts, or results go under "Claims we must never make" in `context/offers.md`. It tells you which file each rule went to.
+7. **Save and sync.** Ask Claude Code to commit and push.
+
+**What it costs:** each post makes one paid DataForSEO call to see Google's first page, usually a few cents or less. The run log in `output/logs/` shows the exact amount.
+
+### The finish-line test
+
+Read your draft out loud. *Does it sound like you, does the first paragraph answer the title's question, and would you publish it after filling in the sources and a light edit?* If yes, the writer works. If not, run `/revise-post` with what's off and save the fixes as permanent rules, then write your next post and see the difference.
+
+---
+
 ## Folder map
 
 ```
@@ -103,9 +123,10 @@ context/                  Your business: ICP, offers, voice, example posts,
                           settings, and topic scoring rules
 my-sources.md             Where your meeting notes and emails live (you create this)
 templates/                The post structure and HTML shell every post uses
-.claude/agents/           The agents that do the work, like the Topic Researcher
-.claude/skills/           Commands you can type, like /research-topics
+.claude/agents/           The agents that do the work, like the Topic Researcher and Writer
+.claude/skills/           Commands you can type, like /research-topics and /write-post
 output/topics/            Topic shortlists, with your approve and reject decisions
+output/drafts/            Post drafts and their briefs, before review
 output/logs/              A short log of each run: data used and cost
 output/posts/             Finished posts land here
 post-log.csv              A record of every post

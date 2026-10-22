@@ -1,9 +1,10 @@
 # Run logs
 
-Each research run saves a short log here as `YYYY-MM-DD-research.md`. It shows:
+Each run saves a short log here:
 
-- What data the run used (Search Console, meetings and emails, keyword data)
-- How many paid DataForSEO calls it made, and the estimated cost
-- Which steps ran the same way as the last run, and anything that was skipped
+- `YYYY-MM-DD-research.md` – from `/research-topics`: what data the run used (Search Console, meetings and emails, keyword data)
+- `YYYY-MM-DD-write.md` – from `/write-post`: which topic was chosen, the Google results and articles read, the word count, and how many facts still need a source
 
-If a shortlist looks off, check its log first. It usually shows a missing data source or a changed setting.
+Every log shows how many paid DataForSEO calls the run made, the estimated cost, which steps ran the same way as the last run, and anything that was skipped.
+
+If a shortlist or draft looks off, check its log first. It usually shows a missing data source or a changed setting.

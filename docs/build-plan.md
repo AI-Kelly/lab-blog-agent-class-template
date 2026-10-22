@@ -30,6 +30,14 @@
 - `/check-setup` also checks the settings file
 - Finish-line test: a shortlist you'd happily write from, with approve or reject marked on every topic
 
+## Session 3: Writer
+
+- Writer agent (`.claude/agents/writer.md`): picks the highest-scoring approved topic (or the one the owner names), reads Google's page-one results for the target keyword with one paid DataForSEO call, reads the top 3-5 articles, writes a brief, then writes the draft following `templates/post-structure.md`
+- Never invents statistics, quotes, client names, results, or prices, and leaves prices out unless `offers.md` says they can be published (`/setup-context` now asks); facts that need a source are marked `[SOURCE NEEDED: ...]` for the Source Finder
+- `/write-post` command: shows the brief and asks "Write it, or change anything first?", then saves the brief and draft to `output/drafts/`, marks the topic "Drafted" on its shortlist, adds a `draft` row to `post-log.csv`, and saves a run log to `output/logs/`
+- `/revise-post` command: edits a draft from the owner's feedback, then offers to save the feedback as permanent rules: style and tone in `context/voice-and-style.md`, claims and facts under "Claims we must never make" in `context/offers.md`
+- Finish-line test: a draft that sounds like you and that you'd publish after filling in the sources and a light edit
+
 ## Later sessions
 
 Announced in the Lab. Each session adds one or more of the steps above, and the class template gets the new files. See [updating-from-template.md](updating-from-template.md) to bring them into your copy.

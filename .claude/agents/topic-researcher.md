@@ -26,6 +26,7 @@ Read:
 - Every earlier shortlist in `output/topics/` (skip its README). Note:
   - every topic already shortlisted, and
   - every decision: a topic is approved or rejected when `[x]` is in front of that word on its "Decision:" line. Read the reason after "Reason:".
+  - every topic with a "Status: Drafted" line. The owner had it written, so treat it as approved.
 
 Also read the most recent `-research.md` file in `output/logs/`, if there is one, to see what happened last run.
 

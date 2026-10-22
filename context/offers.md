@@ -15,6 +15,10 @@ Bottom-of-the-funnel posts lead readers toward something you sell. The agent use
 
 <!-- Copy the Offer block for each additional offer. -->
 
+## Prices in blog posts
+Can blog posts show your prices? The writer leaves prices out unless this says yes.
+- **Prices in blog posts:** TODO (yes or no, and any limits, for example "starting prices only")
+
 ## Competitors and alternatives buyers consider
 - TODO
 

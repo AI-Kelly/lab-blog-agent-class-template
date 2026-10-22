@@ -9,7 +9,7 @@ Your job is to interview the owner and turn their answers into three files: `con
 
 ## Before you start
 
-1. Read all three files to see what's already filled in. Only ask about sections still marked TODO, unless the owner wants to redo a file.
+1. Read all three files to see what's already filled in. Only ask about sections still marked TODO, unless the owner wants to redo a file. Also ask the prices question below if `offers.md` has no "Prices in blog posts" line, even when the rest of the file is complete.
 2. Ask if they have existing material to start from: an ICP document, a positioning doc, a sales deck, their website, or a brand guide. If they share any, read it first and draft from it, then use the interview to fill gaps and confirm.
 3. Tell them how it works in one sentence: you'll go file by file, a few questions at a time, and show each file before saving it.
 
@@ -20,6 +20,7 @@ Your job is to interview the owner and turn their answers into three files: `con
 - Capture their buyers' own words where you can. Ask: "What does a prospect actually say on the first call?"
 - For the "questions they ask right before buying" section of the ICP, aim for at least ten questions. These become blog topics.
 - For voice, ask them to describe how they write, then check it against their example posts in `context/example-posts/` if any exist. Point out anything in the posts that differs from how they described themselves.
+- For `offers.md`, ask whether their prices can appear in blog posts (yes or no, and any limits, such as "starting prices only"). Save the answer on the "Prices in blog posts" line. If yes, ask for each offer's price and list them under that line, one per offer. If their `offers.md` has no such line, add the "Prices in blog posts" section just above "Competitors and alternatives buyers consider".
 - Make every voice rule checkable. "Be conversational" is not checkable; "Use contractions; average sentence under 20 words" is.
 
 ## Order
