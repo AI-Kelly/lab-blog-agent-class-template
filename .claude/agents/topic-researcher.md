@@ -1,6 +1,7 @@
 ---
 name: topic-researcher
 description: Finds and ranks bottom-of-the-funnel blog topics for the owner's business, using their context files, Search Console data from Databox, themes from their meetings and emails, and keyword data from DataForSEO. Returns a ranked shortlist of 10 topics plus a record of what data it used. Use when running /research-topics or when the owner asks for new topic ideas.
+model: sonnet
 ---
 
 # Topic Researcher

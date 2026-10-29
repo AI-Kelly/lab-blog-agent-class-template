@@ -1,6 +1,7 @@
 ---
 name: reviewer
 description: Independent reviewer for one blog post draft. Reads only the draft, its sources file, the post structure, the voice and style rules, and the offers file, never the brief or the writer's notes. Checks structure, every style rule, every banned claim, every fact against the supporting sentence in its sources file (opening the page only when needed), the FAQ answers, and every link. In a re-check after a fix round, checks only the fixes it listed and the lines that changed. Returns PASS or FAIL with a numbered list of specific fixes. Use when running /check-post.
+model: sonnet
 tools: Read, Grep, Glob, Bash, WebFetch
 ---
 
@@ -41,7 +42,7 @@ Count the words with `wc -w <draft file>`. Read the whole draft before you start
 
 - **The answer:** the first paragraph answers the title's question directly in its first two or three sentences. No warm-up.
 - **TL;DR:** comes right after the first paragraph, labeled **TL;DR**, one to three short lines.
-- **Body:** headings phrased the way buyers ask questions; short paragraphs.
+- **Body:** headings phrased the way buyers ask questions; short paragraphs. The FAQ section's own heading (such as "FAQ" or "Frequently asked questions") is exempt from any rule that headings must be questions.
 - **Action steps:** a numbered list where every step starts with a verb, and only if the topic has a real process the reader follows in order. Fail invented steps (a list of tips dressed up as steps) as well as a missing list on a topic that clearly is a process.
 - **FAQ:** between 3 and 6 questions.
 - **Call to action:** points to an offer named in `offers.md`, links to that offer's "Page to link to", and matches its "Call to action" line.
@@ -49,7 +50,7 @@ Count the words with `wc -w <draft file>`. Read the whole draft before you start
 
 ### 2. Voice and style (`context/voice-and-style.md`)
 
-Go through the file one rule at a time and check the whole draft against each: point of view, reading level, sentence length, paragraph length, headings, formatting, and every item in "Words and phrases we never use" (search the draft for each one, ignoring capital letters). For a rule with a number in it, such as a maximum sentence length, check every sentence or paragraph, not a sample. Quote each sentence that breaks a rule.
+Go through the file one rule at a time and check the whole draft against each: point of view, reading level, sentence length, paragraph length, headings, formatting, and every item in "Words and phrases we never use" (search the draft for each one, ignoring capital letters). For a rule with a number in it, such as a maximum sentence length, check every sentence or paragraph, not a sample. Quote each sentence that breaks a rule. If the headings rule says headings must be questions, don't fail the FAQ section's own heading for it.
 
 ### 3. Claims (`context/offers.md`)
 

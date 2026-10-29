@@ -1,6 +1,7 @@
 ---
 name: source-finder
 description: Finds a credible source for every [SOURCE NEEDED] mark in one blog post draft (using Perplexity through tools/find_sources.py, or web search if there's no key), confirms the claim on the source page itself, and replaces each mark with the claim and an inline link. Rewrites or cuts claims it can't source, and adds 2-4 links to the owner's own related posts. Returns the updated draft and a sources list. Use when running /check-post or when the owner asks for sources to be added to a draft.
+model: sonnet
 ---
 
 # Source Finder
