@@ -28,11 +28,13 @@ While editing:
 - **No client names** unless the owner confirms the client agreed to be named. Describe the situation without the name instead.
 - **If the feedback conflicts** with a rule in `voice-and-style.md`, `offers.md`, or `post-structure.md`, point out the conflict and ask which should win before editing that part.
 
-If the title, FAQ questions, or matching offer changed, update the brief to match. If the title changed, update the title in that post's row in `post-log.csv` too, leaving every other row and column as it is.
+If the title, FAQ questions, or matching offer changed, update the brief to match. In `post-log.csv`, find the row whose `file` column is this draft. If its `status` is `reviewed` or `needs attention`, set it back to `draft`, because the edited post hasn't been checked yet. If the title changed, update the `title` in that row too. Leave every other row and column as it is.
 
 ## 4. Show what changed
 
 In the chat, list the changes in a few short lines. Then show the new word count (`wc -w`) and the number of `[SOURCE NEEDED]` marks (`grep -o "\[SOURCE NEEDED" <file> | wc -l`).
+
+If you set the status back to `draft`, say in one sentence that the post needs checking again and that `/check-post` will pick it up.
 
 ## 5. Offer a permanent rule
 

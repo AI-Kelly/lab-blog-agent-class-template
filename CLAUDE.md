@@ -13,7 +13,7 @@ When finished, each run will:
 5. **Deliver.** Save finished HTML (with FAQ schema) and a publishing card in `output/posts/`.
 6. **Log.** Add a row to `post-log.csv`.
 
-The agents for these steps are added one session at a time. **Steps 1 and 2 are built:** type `/research-topics` to run the Topic Researcher agent, `/write-post` to run the Writer agent, and `/revise-post` to revise a draft from feedback. The other steps come in later sessions.
+The agents for these steps are added one session at a time. **Steps 1 to 4 are built:** type `/research-topics` to run the Topic Researcher agent, `/write-post` to run the Writer agent, `/revise-post` to revise a draft from feedback, and `/check-post` to run the Source Finder and the independent Reviewer on a draft. The other steps come in later sessions.
 
 ## Where things live
 
@@ -26,10 +26,10 @@ The agents for these steps are added one session at a time. **Steps 1 and 2 are 
 - `my-sources.md` (optional, made by the owner) – where the owner's meeting notes and emails live. Tool names and folders only, never content.
 - `templates/post-structure.md` – required structure for every post.
 - `templates/post.html` – HTML shell for finished posts.
-- `.claude/agents/` – the agents that do each step (for example, `topic-researcher.md` and `writer.md`).
-- `.claude/skills/` – commands the owner types, such as `/research-topics` and `/write-post`.
+- `.claude/agents/` – the agents that do each step: `topic-researcher.md`, `writer.md`, `source-finder.md`, and `reviewer.md`.
+- `.claude/skills/` – commands the owner types, such as `/research-topics`, `/write-post`, and `/check-post`.
 - `output/topics/` – topic shortlists, with the owner's approve and reject decisions.
-- `output/drafts/` – post drafts and their briefs, before review.
+- `output/drafts/` – post drafts, with their briefs, sources files, and review files.
 - `output/logs/` – a short log of each run: data used, paid calls, cost.
 - `output/posts/` – finished posts.
 - `post-log.csv` – one row per post.

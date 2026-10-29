@@ -115,6 +115,30 @@ Read your draft out loud. *Does it sound like you, does the first paragraph answ
 
 ---
 
+## Session 4: Source Finder and Reviewer
+
+Goal: one command backs every fact in your draft with a real source, links it to your own past posts, and has an independent reviewer check it against your rules, fixing what it can and telling you what it can't.
+
+1. **Get the new files.** Paste the prompt from [docs/updating-from-template.md](docs/updating-from-template.md) into Claude Code.
+2. **Check your rules.** The reviewer checks every post against `context/voice-and-style.md` and `context/offers.md`, and skips any rule still marked TODO. Make sure "Words and phrases we never use", "Post length", "Prices in blog posts", "Competitors and alternatives buyers consider", and "Claims we must never make" are filled in. Check that the Blog URL in `context/settings.md` is the page that lists your posts, so the agent can link to them.
+3. **Check a draft.** Type `/check-post`. It picks your newest draft that hasn't been reviewed, or that you've changed since its last review. To choose one, add its name, like `/check-post how-to-choose-a-payroll-provider`. It takes several minutes and runs on its own:
+   - The **Source Finder** finds a credible source for every `[SOURCE NEEDED]` mark: original studies, government or industry data, well-known publications, or official documentation, never a competitor's blog. It opens each page to confirm the claim is really there. If the page says something different, it changes your sentence to match the source. If no solid source exists, it rewrites the claim so it doesn't need one, or cuts it. It also adds 2-4 links to your own related posts.
+   - The **Reviewer** checks the post without seeing the brief or any of the writer's notes, the way a new editor would. It checks the structure, every style rule, every claim you've said never to make, every fact against its source page, every FAQ answer, the length, and every link.
+   - If the review fails, the writer fixes only the items the reviewer listed and the reviewer checks again, for up to two rounds of fixes.
+4. **Read the result.** The chat shows **PASS**, or a **Needs you** list of what's still wrong, each item quoting the problem and naming the rule it breaks. Fix those by hand or with `/revise-post`, then run `/check-post` again. If an item comes from a rule you don't agree with, change the rule instead.
+5. **Spot-check the sources.** Open the sources file next to your draft in `output/drafts/`. It lists every claim, its link, and the sentence on the page that supports it. Click two or three links and see for yourself.
+6. **Save and sync.** Ask Claude Code to commit and push.
+
+Your post log now shows each checked post as `reviewed` or `needs attention`. If you change a checked post with `/revise-post`, its status goes back to `draft`, and the next `/check-post` checks it again.
+
+**What it costs:** no paid DataForSEO calls. Sourcing and review use web search and page reads, which are part of your Claude plan.
+
+### The finish-line test
+
+Pick three facts in your checked post and click their links. *Does each page say exactly what your post says?* Then read the review file. *Is every item it flagged something you'd want fixed?* If yes to both, the Source Finder and Reviewer work. If the reviewer flags things you don't care about, loosen that rule in your context files; if it misses things you'd catch, add a rule.
+
+---
+
 ## Folder map
 
 ```
@@ -123,10 +147,11 @@ context/                  Your business: ICP, offers, voice, example posts,
                           settings, and topic scoring rules
 my-sources.md             Where your meeting notes and emails live (you create this)
 templates/                The post structure and HTML shell every post uses
-.claude/agents/           The agents that do the work, like the Topic Researcher and Writer
-.claude/skills/           Commands you can type, like /research-topics and /write-post
+.claude/agents/           The agents that do the work: Topic Researcher, Writer,
+                          Source Finder, and Reviewer
+.claude/skills/           Commands you can type, like /write-post and /check-post
 output/topics/            Topic shortlists, with your approve and reject decisions
-output/drafts/            Post drafts and their briefs, before review
+output/drafts/            Post drafts, with their briefs, sources, and reviews
 output/logs/              A short log of each run: data used and cost
 output/posts/             Finished posts land here
 post-log.csv              A record of every post

@@ -38,6 +38,15 @@
 - `/revise-post` command: edits a draft from the owner's feedback, then offers to save the feedback as permanent rules: style and tone in `context/voice-and-style.md`, claims and facts under "Claims we must never make" in `context/offers.md`
 - Finish-line test: a draft that sounds like you and that you'd publish after filling in the sources and a light edit
 
+## Session 4: Source Finder and Reviewer
+
+- Source Finder agent (`.claude/agents/source-finder.md`): for every `[SOURCE NEEDED]` mark, finds an original, credible source (studies, government and industry data, well-known publications, official documentation; never competitors' blogs, self-ranking lists, or content farms), opens the page to confirm the claim, and links it. If the page says something different, the sentence changes to match the source. Claims with no solid source are rewritten or cut. Adds 2-4 links to the owner's own related posts from the blog page in `context/settings.md`
+- Reviewer agent (`.claude/agents/reviewer.md`): independent; reads only the draft, its sources file, `templates/post-structure.md`, `context/voice-and-style.md`, and `context/offers.md`, never the brief or the writer's notes. Checks structure, every style rule, every banned claim, prices, every fact against its source page, the FAQ answers, leftover marks, length, and every link. Returns PASS or FAIL with numbered fixes, each quoting the problem and naming the rule
+- Writer agent gains a fix mode: it fixes only the items the reviewer listed
+- `/revise-post` sets a checked post's status back to `draft`, and `/check-post` picks up drafts changed since their last review (each review file records a fingerprint of the draft)
+- `/check-post` command: runs the Source Finder, then the Reviewer; on FAIL, the writer fixes the listed items and the Reviewer checks again, for at most 2 fix rounds. Saves `<draft>-sources.md` and `<draft>-review.md` to `output/drafts/`, sets the post's status in `post-log.csv` to `reviewed` or `needs attention`, saves a run log to `output/logs/`, and shows PASS or a "Needs you" list
+- Finish-line test: every fact in the post links to a page that says the same thing, and the review either passes or flags only things you agree need your call
+
 ## Later sessions
 
 Announced in the Lab. Each session adds one or more of the steps above, and the class template gets the new files. See [updating-from-template.md](updating-from-template.md) to bring them into your copy.

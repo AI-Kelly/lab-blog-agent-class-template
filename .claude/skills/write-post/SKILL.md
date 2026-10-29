@@ -129,8 +129,8 @@ Never put key values, quotes, or client names in the log.
 In the chat, show:
 - The title, then the first paragraph and the TL;DR, exactly as they appear in the draft.
 - Where the draft and brief are saved.
-- The word count against the target, and the number of `[SOURCE NEEDED]` marks, with one sentence explaining that each mark is a fact that still needs a source, which the Source Finder will fill in a later session.
+- The word count against the target, and the number of `[SOURCE NEEDED]` marks, with one sentence explaining that each mark is a fact that still needs a source, which `/check-post` fills in.
 - Anything the writer's self-check still flagged.
 - Paid calls made and the estimated cost.
 
-Then tell them: read the draft, and if anything needs changing, type `/revise-post` with their feedback. Offer to commit and push the new files.
+Then tell them: read the draft, and if anything needs changing, type `/revise-post` with their feedback. When they're happy with it, type `/check-post` to add sources and have it reviewed. Offer to commit and push the new files.
