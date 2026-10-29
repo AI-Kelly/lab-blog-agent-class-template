@@ -28,6 +28,7 @@ The agents for these steps are added one session at a time. **Steps 1 to 4 are b
 - `templates/post.html` – HTML shell for finished posts.
 - `.claude/agents/` – the agents that do each step: `topic-researcher.md`, `writer.md`, `source-finder.md`, and `reviewer.md`.
 - `.claude/skills/` – commands the owner types, such as `/research-topics`, `/write-post`, and `/check-post`.
+- `tools/` – small scripts the agents run, such as `find_sources.py`, which asks Perplexity for candidate sources. Standard Python only; nothing to install.
 - `output/topics/` – topic shortlists, with the owner's approve and reject decisions.
 - `output/drafts/` – post drafts, with their briefs, sources files, and review files.
 - `output/logs/` – a short log of each run: data used, paid calls, cost.
@@ -50,3 +51,4 @@ Always read the context files before doing any research or writing. If `icp.md`,
 
 - **Databox** – through the Databox connector on the owner's claude.ai account. Use it for Search Console, GA4, and CRM results.
 - **DataForSEO** – through its REST API with HTTP basic auth, using `DATAFORSEO_LOGIN` and `DATAFORSEO_PASSWORD` from `.env`. Base URL: `https://api.dataforseo.com/v3/`.
+- **Perplexity** (optional) – through `tools/find_sources.py`, which reads `PERPLEXITY_API_KEY` from `.env` and calls Perplexity's Agent API with the `perplexity/sonar` model. If there's no key, the Source Finder uses web search instead.

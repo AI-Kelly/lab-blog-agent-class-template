@@ -1,6 +1,6 @@
 ---
 name: check-setup
-description: Test that the blog agent's foundation is ready - context files filled in, settings complete, example posts present, .env set up and ignored by git, Databox connected, and DataForSEO keys working. Use when the owner types /check-setup or asks whether their setup is working.
+description: Test that the blog agent's foundation is ready - context files filled in, settings complete, example posts present, .env set up and ignored by git, Databox connected, DataForSEO keys working, and the optional Perplexity key working. Use when the owner types /check-setup or asks whether their setup is working.
 ---
 
 # Check the setup
@@ -24,6 +24,7 @@ Run each check in order and report the results as a short pass/fail list in plai
 - Confirm `.env` exists and contains `DATAFORSEO_LOGIN` and `DATAFORSEO_PASSWORD` with values.
 - Confirm git ignores it: run `git check-ignore .env`. If it isn't ignored, stop and fix `.gitignore` before anything else.
 - If `.env` is missing, tell the owner to copy `.env.example` to `.env` and fill it in.
+- Note whether `PERPLEXITY_API_KEY` has a value. It's optional and is tested in step 7.
 
 ## 5. Databox
 - Use the Databox connector to list accounts. Pass if the account ID in `context/settings.md` is one of them. If the owner can see more than one account, show the name of the one in settings so they can confirm it's theirs.
@@ -36,6 +37,10 @@ Run each check in order and report the results as a short pass/fail list in plai
 - Load the login and password from `.env` without printing them.
 - Call `GET https://api.dataforseo.com/v3/appendix/user_data` with HTTP basic auth. This call is free. Pass if it returns status code 20000; report the account balance.
 - Then ask the owner for five keywords related to their business and check their search volume with `POST https://api.dataforseo.com/v3/keywords_data/google_ads/search_volume/live` (use the country and language in `context/settings.md`, or "United States" and "English" if those are still TODO). Tell the owner this costs a few cents before running it.
+
+## 7. Perplexity (optional)
+- If `.env` has no `PERPLEXITY_API_KEY` value, mark this "Not set up (optional)". Say in one sentence that `/check-post` still works with web search, but a Perplexity key makes it much faster, and point to the Perplexity step in the README's Session 4 section.
+- Otherwise run `python3 tools/find_sources.py --test`. It makes one tiny call (a fraction of a cent) and prints JSON without the key. Pass if `status` is `ok`. If it's `error`, show the `message` in plain English: a rejected key means copy it again from console.perplexity.ai → API Keys, and "out of credit" means add credit there.
 
 ## Wrap up
 

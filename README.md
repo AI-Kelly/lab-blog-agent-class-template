@@ -42,6 +42,7 @@ Either way, your copy is fully independent. Nothing you add flows back here, and
 | Claude Code (Pro plan or higher) | Builds the agents with you and runs them |
 | Databox, with Search Console and GA4 connected | Shows the agent your past results |
 | DataForSEO account (pay as you go) | Keyword volume and what's ranking today |
+| Perplexity API account (optional, pay as you go) | Finds sources for your facts quickly (from Session 4) |
 
 Connect Databox through your **claude.ai connectors** (claude.ai → Customize → Connectors), not from the terminal. Scheduled runs can only use connectors added there.
 
@@ -120,18 +121,23 @@ Read your draft out loud. *Does it sound like you, does the first paragraph answ
 Goal: one command backs every fact in your draft with a real source, links it to your own past posts, and has an independent reviewer check it against your rules, fixing what it can and telling you what it can't.
 
 1. **Get the new files.** Paste the prompt from [docs/updating-from-template.md](docs/updating-from-template.md) into Claude Code.
-2. **Check your rules.** The reviewer checks every post against `context/voice-and-style.md` and `context/offers.md`, and skips any rule still marked TODO. Make sure "Words and phrases we never use", "Post length", "Prices in blog posts", "Competitors and alternatives buyers consider", and "Claims we must never make" are filled in. Check that the Blog URL in `context/settings.md` is the page that lists your posts, so the agent can link to them.
-3. **Check a draft.** Type `/check-post`. It picks your newest draft that hasn't been reviewed, or that you've changed since its last review. To choose one, add its name, like `/check-post how-to-choose-a-payroll-provider`. It takes several minutes and runs on its own:
-   - The **Source Finder** finds a credible source for every `[SOURCE NEEDED]` mark: original studies, government or industry data, well-known publications, or official documentation, never a competitor's blog. It opens each page to confirm the claim is really there. If the page says something different, it changes your sentence to match the source. If no solid source exists, it rewrites the claim so it doesn't need one, or cuts it. It also adds 2-4 links to your own related posts.
-   - The **Reviewer** checks the post without seeing the brief or any of the writer's notes, the way a new editor would. It checks the structure, every style rule, every claim you've said never to make, every fact against its source page, every FAQ answer, the length, and every link.
-   - If the review fails, the writer fixes only the items the reviewer listed and the reviewer checks again, for up to two rounds of fixes.
-4. **Read the result.** The chat shows **PASS**, or a **Needs you** list of what's still wrong, each item quoting the problem and naming the rule it breaks. Fix those by hand or with `/revise-post`, then run `/check-post` again. If an item comes from a rule you don't agree with, change the rule instead.
-5. **Spot-check the sources.** Open the sources file next to your draft in `output/drafts/`. It lists every claim, its link, and the sentence on the page that supports it. Click two or three links and see for yourself.
-6. **Save and sync.** Ask Claude Code to commit and push.
+2. **Add a Perplexity key (optional, recommended).** It lets the Source Finder look up every fact at once, so `/check-post` takes a couple of minutes instead of much longer. Without it, everything still works using regular web search, just slower.
+   - Go to the [Perplexity API Console](https://console.perplexity.ai), sign in, and add a few dollars of credit under **Billing**. Five dollars lasts a long time.
+   - On the [API Keys](https://console.perplexity.ai/project/keys) page, create a key and copy it.
+   - Open your `.env` file and add a line: `PERPLEXITY_API_KEY=` followed by your key. (Ask Claude Code to open `.env` for you if you can't find it. Don't paste the key into the chat.)
+   - Type `/check-setup`. The Perplexity line should say it works.
+3. **Check your rules.** The reviewer checks every post against `context/voice-and-style.md` and `context/offers.md`, and skips any rule still marked TODO. Make sure "Words and phrases we never use", "Post length", "Prices in blog posts", "Competitors and alternatives buyers consider", and "Claims we must never make" are filled in. Check that the Blog URL in `context/settings.md` is the page that lists your posts, so the agent can link to them.
+4. **Check a draft.** Type `/check-post`. It picks your newest draft that hasn't been reviewed, or that you've changed since its last review. To choose one, add its name, like `/check-post how-to-choose-a-payroll-provider`. It usually takes a couple of minutes and runs on its own:
+   - The **Source Finder** finds a credible source for every `[SOURCE NEEDED]` mark: original studies, government or industry data, well-known publications, or official documentation, never a competitor's blog. Perplexity suggests up to three sources per fact, with the sentence on each page that supports it. The Source Finder opens the best one to confirm the claim is really there, and tries the next if it isn't. If the page says something different, it changes your sentence to match the source. If no solid source exists, it rewrites the claim so it doesn't need one, or cuts it. It also adds 2-4 links to your own related posts.
+   - The **Reviewer** checks the post without seeing the brief or any of the writer's notes, the way a new editor would. It checks the structure, every style rule, every claim you've said never to make, every fact against the supporting sentence saved from its source page (opening the page itself when that sentence isn't clear), every FAQ answer, the length, and every link.
+   - If the review fails, the writer fixes only the items the reviewer listed, and the reviewer re-checks just those items and the lines that changed, for up to two rounds of fixes.
+5. **Read the result.** The chat shows **PASS**, or a **Needs you** list of what's still wrong, each item quoting the problem and naming the rule it breaks. Fix those by hand or with `/revise-post`, then run `/check-post` again. If an item comes from a rule you don't agree with, change the rule instead.
+6. **Spot-check the sources.** Open the sources file next to your draft in `output/drafts/`. It lists every claim, its link, and the sentence on the page that supports it. Click two or three links and see for yourself.
+7. **Save and sync.** Ask Claude Code to commit and push.
 
 Your post log now shows each checked post as `reviewed` or `needs attention`. If you change a checked post with `/revise-post`, its status goes back to `draft`, and the next `/check-post` checks it again.
 
-**What it costs:** no paid DataForSEO calls. Sourcing and review use web search and page reads, which are part of your Claude plan.
+**What it costs:** no paid DataForSEO calls. With a Perplexity key, each post makes one small Perplexity call per fact, usually a few cents per post in total; the run log in `output/logs/` shows the number of calls and the exact cost. Everything else uses web search and page reads, which are part of your Claude plan.
 
 ### The finish-line test
 
@@ -155,6 +161,7 @@ output/drafts/            Post drafts, with their briefs, sources, and reviews
 output/logs/              A short log of each run: data used and cost
 output/posts/             Finished posts land here
 post-log.csv              A record of every post
+tools/                    Small scripts the agents run, like the Perplexity source search
 docs/                     Build plan and how to get template updates
 .env                      Your keys (you create this; it is never uploaded)
 ```
