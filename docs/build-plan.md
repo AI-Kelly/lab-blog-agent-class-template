@@ -9,8 +9,8 @@
 | 3. Write | Writer agent | Drafts the post in the owner's voice, following the post structure |
 | 4. Source | Source Finder agent | Adds credible supporting links and internal links |
 | 5. Review | Reviewer agent (independent) | Checks style, facts, and FAQ answers; up to two rounds of fixes |
-| 6. Deliver | Finisher | Saves the HTML post and publishing card |
-| 7. Log | Finisher | Records the post in `post-log.csv` |
+| 6. Deliver | `/finish-post` | Saves the HTML post and publishing card |
+| 7. Log | `/finish-post`, `/mark-published` | Records the post in `post-log.csv` |
 
 ## Session 1: Foundation
 
@@ -48,10 +48,18 @@
 - `/check-post` command: runs the Source Finder, then the Reviewer; on FAIL, the writer fixes the listed items and the Reviewer checks again, for at most 2 fix rounds. Saves `<draft>-sources.md` and `<draft>-review.md` to `output/drafts/`, sets the post's status in `post-log.csv` to `reviewed` or `needs attention`, saves a run log to `output/logs/` (including Perplexity calls and cost, web searches, and pages opened), and shows PASS or a "Needs you" list
 - Finish-line test: every fact in the post links to a page that says the same thing, and the review either passes or flags only things you agree need your call
 
-## Notes for the scheduling session
+## Session 5: Finish, run, and schedule
 
-- Scheduled runs in the cloud need `api.perplexity.ai` on the routine environment's allowed domains, and `PERPLEXITY_API_KEY` stored as an API credential, the same way as DataForSEO.
+- HTML builder (`tools/build_post.py`, standard Python only): converts a reviewed draft to clean HTML, builds FAQPage schema from the FAQ section, fills in `templates/post.html`, and warns about leftover `[SOURCE NEEDED]` or TODO marks. Code, not AI, because it's the same job every time
+- `/finish-post` command: only finishes posts that passed review (or the owner says finish anyway), notes if the draft was edited after review, builds the HTML, writes the publishing card (meta description, slug, category, tags, image alt text, links, how to publish), sets status to `ready to publish`, and saves a run log. Optional: creates a **draft** in the owner's blog platform through a connector, if the owner said yes under "Publishing" in `context/settings.md`. Never publishes
+- `/mark-published` command: checks the live page loads and shows the title, then records `published` and the `published_url` in `post-log.csv` and on the card
+- `/run-blog-agent` command: a full run with no questions. Finishes posts already reviewed, writes one post from the top approved topic (brief approved automatically, because the owner approved the topic), runs `/check-post`, finishes it on PASS, researches new topics when approved ones run low (but not while a recent shortlist still waits for decisions), saves a run report that leads with "What you need to do", and commits and pushes. Never writes unapproved topics
+- Scheduled task (`docs/scheduling.md`): runs `/run-blog-agent` in the cloud on Sonnet 5.5, with a "Blog agent" cloud environment (Full network access; DataForSEO and Perplexity keys as environment variables) and only the needed connectors. Results land on the main branch
+- Finish-line test: the first scheduled run's report says clearly what to do, and its finished post is one you'd publish after a quick read
 
-## Later sessions
+## Optional add-ons
 
-Announced in the Lab. Each session adds one or more of the steps above, and the class template gets the new files. See [updating-from-template.md](updating-from-template.md) to bring them into your copy.
+- Hero images for each post
+- Swapping a cheaper, faster model into yes-or-no checks, such as confirming a source page supports a claim
+- A refresh command that finds old posts losing traffic in Databox and updates them
+- Turning other repeated steps into small scripts, the way `build_post.py` did for the HTML

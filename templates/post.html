@@ -1,43 +1,16 @@
 <!--
-  Post template. The delivery step fills in every {{PLACEHOLDER}}.
-  Paste everything below this comment into your blog editor's HTML view.
-  The FAQ schema block must list the same questions and answers that appear in the FAQ section.
+  HTML shell for finished posts. tools/build_post.py fills in:
+    {{TITLE}}         the post title (used only if you add it below)
+    {{ARTICLE_HTML}}  the whole post, from the answer paragraph to the call to action
+    {{FAQ_SCHEMA}}    the FAQPage schema, built from the post's FAQ section
+  You can add your own wrapper or classes around the placeholders. Keep all three
+  placeholder names exactly as they are. This comment is removed from finished posts.
 -->
 <article>
-  <h1>{{TITLE}}</h1>
-
-  <p>{{ANSWER_PARAGRAPH}}</p>
-
-  <p><strong>TL;DR:</strong> {{TLDR}}</p>
-
-  {{BODY_HTML}}
-
-  <!-- Remove this section if the post has no action steps. -->
-  <h2>{{ACTION_STEPS_HEADING}}</h2>
-  <ol>
-    {{ACTION_STEPS_LIST_ITEMS}}
-  </ol>
-
-  <h2>Frequently asked questions</h2>
-  {{FAQ_HTML}}
-
-  <p>{{CALL_TO_ACTION}}</p>
+{{ARTICLE_HTML}}
 </article>
 
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {{FAQ_SCHEMA_ITEMS}}
-  ]
-}
-</script>
-<!--
-  Each FAQ_SCHEMA_ITEMS entry looks like:
-  {
-    "@type": "Question",
-    "name": "The question?",
-    "acceptedAnswer": { "@type": "Answer", "text": "The answer." }
-  }
--->
+<!-- FAQ schema: helps search engines and AI assistants read your FAQ.
+     If your blog editor removes this block, paste it into the post's
+     "head HTML", "custom code", or SEO plugin schema field instead. -->
+{{FAQ_SCHEMA}}

@@ -145,6 +145,35 @@ Pick three facts in your checked post and click their links. *Does each page say
 
 ---
 
+## Session 5: Finish, run, and schedule
+
+Goal: a reviewed draft becomes a finished post you can paste into any blog platform, one command runs the whole agent, and a scheduled task runs it in the cloud without you.
+
+1. **Get the new files.** Paste the prompt from [docs/updating-from-template.md](docs/updating-from-template.md) into Claude Code.
+2. **Finish a post.** Type `/finish-post`. It takes your oldest post marked `reviewed` (or name one, like `/finish-post how-to-choose-a-payroll-provider`) and saves two files in `output/posts/`:
+   - **The post** (`.html`): the whole post as clean HTML, with FAQ schema built from your FAQ section. A small script does this part, so it's the same every time and costs nothing.
+   - **The publishing card** (`-card.md`): the title, meta description, URL slug, category, tags, image idea and alt text, the links in the post, and step-by-step instructions for publishing it.
+
+   The first time, it asks which platform hosts your blog and whether you want it to create a draft there. Say yes only if you have a connector for your blog platform at claude.ai → Customize → Connectors. Either way, the agent never publishes. You always press publish yourself.
+3. **Publish it.** Follow the card's steps in your blog editor. Then type `/mark-published <slug> <live URL>`. The post log records the URL, so the Source Finder can link to the post from future posts and the researcher won't suggest the topic again.
+4. **Run the whole agent with one command.** Make sure at least one topic in your latest shortlist is marked `[x] approve`, then type `/run-blog-agent`. It doesn't ask any questions: it writes the top approved topic, sources and reviews it, and finishes it if it passes. If you have no approved topics left, it researches new ones for you to choose from instead. It saves a run report in `output/logs/` that starts with **What you need to do**, then commits and pushes. It usually takes 15 to 30 minutes.
+5. **Schedule it.** Follow [docs/scheduling.md](docs/scheduling.md) to create a scheduled task that runs `/run-blog-agent` in the cloud, using Sonnet 5.5. Click **Run now** to test it.
+6. **Save and sync.** Ask Claude Code to commit and push.
+
+**What it costs:** `/finish-post` and `/mark-published` make no paid calls. A full run costs the same as running the other commands one by one: a few cents of DataForSEO and Perplexity, plus Claude usage from your plan. Each run report shows the exact amounts.
+
+### The finish-line test
+
+Open the run report from your first scheduled run. *Does it tell you clearly what to do, and is the post it finished one you'd publish after a quick read?* If yes, your blog agent is running on its own. From here, your job is to approve topics, publish posts, and keep teaching it with `/revise-post`.
+
+### After each scheduled run
+
+1. Ask Claude Code: *"Get the latest from GitHub."*
+2. Do what the run report says: publish the ready post, fix anything under **Needs you**, or mark approve or reject on the new shortlist.
+3. Type `/mark-published` for anything you published, then commit and push so the next run sees your decisions.
+
+---
+
 ## Folder map
 
 ```
@@ -155,14 +184,16 @@ my-sources.md             Where your meeting notes and emails live (you create t
 templates/                The post structure and HTML shell every post uses
 .claude/agents/           The agents that do the work: Topic Researcher, Writer,
                           Source Finder, and Reviewer
-.claude/skills/           Commands you can type, like /write-post and /check-post
+.claude/skills/           Commands you can type, like /write-post, /check-post,
+                          /finish-post, and /run-blog-agent
 output/topics/            Topic shortlists, with your approve and reject decisions
 output/drafts/            Post drafts, with their briefs, sources, and reviews
 output/logs/              A short log of each run: data used and cost
-output/posts/             Finished posts land here
+output/posts/             Finished posts (HTML) and their publishing cards
 post-log.csv              A record of every post
-tools/                    Small scripts the agents run, like the Perplexity source search
-docs/                     Build plan and how to get template updates
+tools/                    Small scripts the agents run: the Perplexity source search
+                          and the HTML builder
+docs/                     Build plan, scheduling guide, and how to get template updates
 .env                      Your keys (you create this; it is never uploaded)
 ```
 

@@ -13,7 +13,12 @@ When finished, each run will:
 5. **Deliver.** Save finished HTML (with FAQ schema) and a publishing card in `output/posts/`.
 6. **Log.** Add a row to `post-log.csv`.
 
-The agents for these steps are added one session at a time. **Steps 1 to 4 are built:** type `/research-topics` to run the Topic Researcher agent, `/write-post` to run the Writer agent, `/revise-post` to revise a draft from feedback, and `/check-post` to run the Source Finder and the independent Reviewer on a draft. The other steps come in later sessions.
+**All six steps are built.** Commands the owner can type:
+- `/research-topics` runs the Topic Researcher agent.
+- `/write-post` runs the Writer agent; `/revise-post` revises a draft from feedback.
+- `/check-post` runs the Source Finder and the independent Reviewer on a draft.
+- `/finish-post` turns a reviewed draft into finished HTML and a publishing card; `/mark-published` records the live URL.
+- `/run-blog-agent` does a whole run with no questions: finishes reviewed posts, writes, checks, and finishes one post from the top approved topic, researches new topics when needed, and commits and pushes. A scheduled task in the cloud runs this command (see `docs/scheduling.md`).
 
 ## Where things live
 
@@ -28,13 +33,14 @@ The agents for these steps are added one session at a time. **Steps 1 to 4 are b
 - `templates/post.html` – HTML shell for finished posts.
 - `.claude/agents/` – the agents that do each step: `topic-researcher.md`, `writer.md`, `source-finder.md`, and `reviewer.md`.
 - `.claude/skills/` – commands the owner types, such as `/research-topics`, `/write-post`, and `/check-post`.
-- `tools/` – small scripts the agents run, such as `find_sources.py`, which asks Perplexity for candidate sources. Standard Python only; nothing to install.
+- `tools/` – small scripts the agents run: `find_sources.py` asks Perplexity for candidate sources, and `build_post.py` turns a reviewed draft into HTML with FAQ schema. Standard Python only; nothing to install.
 - `output/topics/` – topic shortlists, with the owner's approve and reject decisions.
 - `output/drafts/` – post drafts, with their briefs, sources files, and review files.
 - `output/logs/` – a short log of each run: data used, paid calls, cost.
-- `output/posts/` – finished posts.
+- `output/posts/` – finished posts: the HTML file and its publishing card.
 - `post-log.csv` – one row per post.
 - `docs/build-plan.md` – what gets built and in what order.
+- `docs/scheduling.md` – how to run the agent on a schedule in the cloud.
 
 Always read the context files before doing any research or writing. If `icp.md`, `offers.md`, or `voice-and-style.md` still contains `TODO` lines, tell the owner and offer to run `/setup-context`. Missing lines in `settings.md` are filled in by `/research-topics`.
 
@@ -45,10 +51,12 @@ Always read the context files before doing any research or writing. If `icp.md`,
 - **Read data from Databox, not from ad platforms or CRMs directly.** Use only the Databox account in `context/settings.md`.
 - **Watch DataForSEO spending.** Batch keywords into as few calls as possible, and never make more paid calls in one run than the limit in `context/settings.md`.
 - **Write in plain English.** The owner is a marketing or sales leader, not a developer. Explain what you did in one or two sentences, not a list of commands.
-- **Ask before anything that publishes or sends** (posting to a blog, emailing, posting to social).
+- **Ask before anything that publishes or sends** (posting to a blog, emailing, posting to social). The agent never publishes a post. `/finish-post` may create a **draft** in the owner's blog platform only if `context/settings.md` says yes under "Publishing".
+- **Unattended runs never ask questions.** When `/run-blog-agent` runs (on a schedule or by hand), follow its defaults instead of asking, and list every decision in the run report.
 
 ## Data access
 
 - **Databox** – through the Databox connector on the owner's claude.ai account. Use it for Search Console, GA4, and CRM results.
 - **DataForSEO** – through its REST API with HTTP basic auth, using `DATAFORSEO_LOGIN` and `DATAFORSEO_PASSWORD` from `.env`. Base URL: `https://api.dataforseo.com/v3/`.
+- **Keys in scheduled runs** – there's no `.env` in the cloud. The same names (`DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD`, `PERPLEXITY_API_KEY`) are environment variables there, set on the cloud environment. Use them when `.env` is missing.
 - **Perplexity** (optional) – through `tools/find_sources.py`, which reads `PERPLEXITY_API_KEY` from `.env` and calls Perplexity's Agent API with the `perplexity/sonar` model. If there's no key, the Source Finder uses web search instead.

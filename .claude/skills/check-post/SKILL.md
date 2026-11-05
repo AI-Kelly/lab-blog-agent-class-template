@@ -184,7 +184,7 @@ Never put key values, quotes from meetings or emails, or client names in the log
 
 If the Source Finder used web search because there's no Perplexity key, add one sentence: adding a Perplexity key makes this faster, and the README's Session 4 section shows how.
 
-Then tell them the post is ready for the next step, which turns it into finished HTML in a later session. Offer to commit and push the new files.
+Then tell them the post is ready for the last step: type `/finish-post` to turn it into finished HTML and a publishing card. Offer to commit and push the new files.
 
 **If it didn't pass,** show in the chat:
 - **Needs you** and the title, with one sentence saying the reviewer still found problems after <n> fix rounds.
