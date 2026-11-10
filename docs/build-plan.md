@@ -57,9 +57,16 @@
 - Scheduled task (`docs/scheduling.md`): runs `/run-blog-agent` in the cloud on Sonnet 5.5, with a "Blog agent" cloud environment (Full network access; DataForSEO and Perplexity keys as environment variables) and only the needed connectors. Results land on the main branch
 - Finish-line test: the first scheduled run's report says clearly what to do, and its finished post is one you'd publish after a quick read
 
+## Add-on: Blog dashboard
+
+- Dashboard builder (`tools/build_dashboard.py`, standard Python only): builds `output/dashboard.html` from `post-log.csv`, the shortlists in `output/topics/`, the run logs in `output/logs/`, the review files in `output/drafts/`, and `output/search-console.csv`. Shows what needs the owner, totals, the research-to-published pipeline, weekly Search Console clicks and impressions, every post, every topic with the owner's call and reason, the reviewer's fixes grouped by rule area, and every run with its cost. Works offline, in light and dark mode, and on a phone
+- `/blog-dashboard` command: pulls the latest from GitHub, saves the last 26 weeks of whole-site Search Console clicks and impressions from Databox to `output/search-console.csv`, builds the dashboard, opens it, and shows the "What you need to do" list. Both files are git-ignored, because they're rebuilt each time
+- Finish-line test: the dashboard's "What you need to do" list matches what the latest run report says, and its spend matches the run logs
+
 ## Optional add-ons
 
 - Hero images for each post
 - Swapping a cheaper, faster model into yes-or-no checks, such as confirming a source page supports a claim
 - A refresh command that finds old posts losing traffic in Databox and updates them
+- Results for each published post on the dashboard: clicks, impressions, and Google position at 30, 60, and 90 days, from Databox
 - Turning other repeated steps into small scripts, the way `build_post.py` did for the HTML

@@ -13,3 +13,7 @@ Thumbs.db
 node_modules/
 __pycache__/
 *.pyc
+
+# Dashboard (rebuilt by /blog-dashboard each time)
+output/dashboard.html
+output/search-console.csv

@@ -171,6 +171,29 @@ Open the run report from your first scheduled run. *Does it tell you clearly wha
 1. Ask Claude Code: *"Get the latest from GitHub."*
 2. Do what the run report says: publish the ready post, fix anything under **Needs you**, or mark approve or reject on the new shortlist.
 3. Type `/mark-published` for anything you published, then commit and push so the next run sees your decisions.
+4. Type `/blog-dashboard` to see where everything stands.
+
+---
+
+## Add-on: Blog dashboard
+
+Goal: one page that shows how your blog agent is doing, without opening a single log file.
+
+1. **Get the new files.** Paste the prompt from [docs/updating-from-template.md](docs/updating-from-template.md) into Claude Code.
+2. **Open your dashboard.** Type `/blog-dashboard`. It gets the latest files from GitHub, pulls your weekly Search Console clicks and impressions from Databox, builds the page, and opens it in your browser. It shows:
+   - **What you need to do:** posts to publish, posts that need you, topics waiting for your approve or reject call
+   - **Totals:** topics researched, approved, waiting to be written, in progress, ready to publish, published, and what you've spent on paid data
+   - **The pipeline:** how many topics made it from research to published
+   - **Search Console:** clicks and impressions by week, the last 13 weeks against the 13 before
+   - **Every post** with its status, word count, review rounds, and live link
+   - **Every topic** with its scores, your call, and your reason
+   - **What the reviewer asked the writer to fix,** grouped by rule area, so you can see which rules keep failing
+   - **Every run and what it cost**
+3. **Run it whenever you like.** Type `/blog-dashboard` again for the latest numbers. It takes about a minute.
+
+The dashboard is built from files already in your project (`post-log.csv`, your shortlists, run logs, and review files), so it's always in step with the agent. It's saved as `output/dashboard.html` on your computer only; it isn't uploaded to GitHub, because it's rebuilt each time.
+
+**What it costs:** nothing. No paid calls; the page is built by a small script.
 
 ---
 
@@ -185,14 +208,15 @@ templates/                The post structure and HTML shell every post uses
 .claude/agents/           The agents that do the work: Topic Researcher, Writer,
                           Source Finder, and Reviewer
 .claude/skills/           Commands you can type, like /write-post, /check-post,
-                          /finish-post, and /run-blog-agent
+                          /finish-post, /run-blog-agent, and /blog-dashboard
 output/topics/            Topic shortlists, with your approve and reject decisions
 output/drafts/            Post drafts, with their briefs, sources, and reviews
 output/logs/              A short log of each run: data used and cost
 output/posts/             Finished posts (HTML) and their publishing cards
+output/dashboard.html     Your dashboard (made by /blog-dashboard; stays on your computer)
 post-log.csv              A record of every post
-tools/                    Small scripts the agents run: the Perplexity source search
-                          and the HTML builder
+tools/                    Small scripts the agents run: the Perplexity source search,
+                          the HTML builder, and the dashboard builder
 docs/                     Build plan, scheduling guide, and how to get template updates
 .env                      Your keys (you create this; it is never uploaded)
 ```

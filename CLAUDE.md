@@ -18,6 +18,7 @@ When finished, each run will:
 - `/write-post` runs the Writer agent; `/revise-post` revises a draft from feedback.
 - `/check-post` runs the Source Finder and the independent Reviewer on a draft.
 - `/finish-post` turns a reviewed draft into finished HTML and a publishing card; `/mark-published` records the live URL.
+- `/blog-dashboard` builds and opens a dashboard of every topic, post, review fix, run, and cost, plus Search Console clicks and impressions.
 - `/run-blog-agent` does a whole run with no questions: finishes reviewed posts, writes, checks, and finishes one post from the top approved topic, researches new topics when needed, and commits and pushes. A scheduled task in the cloud runs this command (see `docs/scheduling.md`).
 
 ## Where things live
@@ -33,11 +34,12 @@ When finished, each run will:
 - `templates/post.html` – HTML shell for finished posts.
 - `.claude/agents/` – the agents that do each step: `topic-researcher.md`, `writer.md`, `source-finder.md`, and `reviewer.md`.
 - `.claude/skills/` – commands the owner types, such as `/research-topics`, `/write-post`, and `/check-post`.
-- `tools/` – small scripts the agents run: `find_sources.py` asks Perplexity for candidate sources, and `build_post.py` turns a reviewed draft into HTML with FAQ schema. Standard Python only; nothing to install.
+- `tools/` – small scripts the agents run: `find_sources.py` asks Perplexity for candidate sources, `build_post.py` turns a reviewed draft into HTML with FAQ schema, and `build_dashboard.py` builds the dashboard. Standard Python only; nothing to install.
 - `output/topics/` – topic shortlists, with the owner's approve and reject decisions.
 - `output/drafts/` – post drafts, with their briefs, sources files, and review files.
 - `output/logs/` – a short log of each run: data used, paid calls, cost.
 - `output/posts/` – finished posts: the HTML file and its publishing card.
+- `output/dashboard.html` – the dashboard, rebuilt by `/blog-dashboard`. Git-ignored, along with `output/search-console.csv`.
 - `post-log.csv` – one row per post.
 - `docs/build-plan.md` – what gets built and in what order.
 - `docs/scheduling.md` – how to run the agent on a schedule in the cloud.
